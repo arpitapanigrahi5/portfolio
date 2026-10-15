@@ -67,14 +67,79 @@ section>.wrap>h2{font-size:clamp(34px,5vw,52px);font-weight:800;margin-bottom:12
 footer{padding:40px 0 56px;border-top:1px solid var(--line);color:var(--muted);font-size:15px}
 @media(max-width:640px){.edu article{grid-template-columns:1fr}#list li{grid-template-columns:1fr}#list .r{text-align:left}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* v2 */
+:root{--grad:linear-gradient(100deg,var(--accent),#9B5CFF 55%,#FF6AA8)}
+html{scroll-padding-top:84px}
+body{overflow-x:hidden;background-image:radial-gradient(color-mix(in srgb,var(--ink) 9%,transparent) 1px,transparent 1.3px);background-size:26px 26px}
+#bar{position:fixed;top:0;left:0;right:0;height:3px;background:var(--grad);transform-origin:0 50%;transform:scaleX(var(--p,0));z-index:50}
+nav{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);left:50%;transform:translateX(-50%);z-index:40;width:max-content;max-width:calc(100% - 24px);flex-wrap:nowrap;padding:10px 20px;gap:18px;align-items:center;border-radius:99px;background:color-mix(in srgb,var(--surface) 72%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:0 12px 32px -16px rgba(16,25,53,.4)}
+nav a{white-space:nowrap}
+nav button{all:unset;cursor:pointer;font-size:18px;line-height:1;color:var(--ink);padding:2px 4px;border-radius:50%}
+header.hero{position:relative;isolation:isolate;padding:132px 0 56px}
+header.hero::before{content:'';position:absolute;inset:-60px -40% -40px;z-index:-1;filter:blur(36px);background:radial-gradient(38% 42% at 18% 32%,color-mix(in srgb,var(--accent) 38%,transparent),transparent 70%),radial-gradient(34% 40% at 82% 22%,rgba(155,92,255,.32),transparent 70%),radial-gradient(30% 36% at 62% 88%,rgba(255,106,168,.26),transparent 70%);animation:drift 16s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate3d(3%,5%,0) scale(1.1)}}
+.eyebrow{display:inline-block;padding:7px 14px;border:1px solid var(--line);border-radius:99px;background:var(--surface);font:600 12.5px/1 'Instrument Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:22px}
+.grad{background:var(--grad);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 9s ease-in-out infinite alternate}
+@keyframes shine{to{background-position:100% 0}}
+.chips{display:none}
+@media(min-width:1100px){.chips{display:block;position:absolute;inset:0;pointer-events:none}.chips span{position:absolute;padding:10px 16px;border-radius:99px;background:color-mix(in srgb,var(--surface) 80%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);font-weight:600;font-size:14px;box-shadow:0 10px 30px -12px rgba(16,25,53,.35);animation:fl 6s ease-in-out infinite alternate}.chips span:nth-child(1){right:3%;top:150px}.chips span:nth-child(2){right:13%;top:250px;animation-delay:-2s}.chips span:nth-child(3){right:1%;top:350px;animation-delay:-4s}}
+@keyframes fl{to{transform:translateY(-14px) rotate(1.5deg)}}
+.cta{margin-top:32px;display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;padding:14px 26px;border-radius:99px;background:var(--ink);color:var(--bg);font-weight:600;text-decoration:none;border:1.5px solid var(--ink);transition:transform .25s,box-shadow .25s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 14px 28px -12px color-mix(in srgb,var(--accent) 70%,transparent)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-top:44px}
+.stats div{background:color-mix(in srgb,var(--surface) 70%,transparent);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:18px;padding:18px 20px}
+.stats b{display:block;font:800 clamp(34px,5vw,48px)/1.05 'Bricolage Grotesque',sans-serif;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stats span{color:var(--muted);font-size:14.5px}
+.marq{overflow:hidden;border-block:1px solid var(--line);padding:18px 0;background:var(--surface)}
+.marq div{display:flex;width:max-content;animation:mq 45s linear infinite;font:800 24px/1 'Bricolage Grotesque',sans-serif;color:var(--muted)}
+.marq span{margin-right:44px}.marq span::after{content:'✦';margin-left:44px;color:var(--accent)}
+@keyframes mq{to{transform:translateX(-50%)}}
+section:nth-of-type(even){background:color-mix(in srgb,var(--surface) 45%,transparent)}
+section>.wrap>h2::after{content:'';display:block;width:64px;height:6px;border-radius:6px;background:var(--grad);margin-top:14px}
+.edu{border-left:2px solid var(--line);margin-left:8px}
+.edu article{position:relative;padding-left:32px}
+.edu article::before{content:'';position:absolute;left:-9px;top:28px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:3px solid var(--accent);box-shadow:0 0 0 6px color-mix(in srgb,var(--accent) 16%,transparent)}
+.skills{counter-reset:s}
+.skills>div{counter-increment:s;position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:30px 26px;transition:transform .3s,box-shadow .3s}
+.skills>div::before{content:'';position:absolute;inset:0 0 auto 0;height:5px;background:var(--grad)}
+.skills>div::after{content:'0' counter(s);position:absolute;right:20px;top:16px;font:800 64px/1 'Bricolage Grotesque',sans-serif;color:color-mix(in srgb,var(--ink) 6%,transparent)}
+.skills>div:hover{transform:translateY(-5px);box-shadow:0 18px 36px -18px color-mix(in srgb,var(--accent) 60%,transparent)}
+.skills li{background:var(--bg)}
+.hl{counter-reset:h}
+.hl div{counter-increment:h;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px 22px 24px;transition:transform .3s,box-shadow .3s,border-color .3s}
+.hl div::before{content:'0' counter(h);display:block;margin-bottom:10px;font:800 14px/1 'Bricolage Grotesque',sans-serif;letter-spacing:.1em;color:var(--accent)}
+.hl div:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 14px 30px -14px color-mix(in srgb,var(--accent) 50%,transparent)}
+#chart{display:flex;gap:6px;margin:22px 0 6px;padding:18px 14px 12px;background:var(--surface);border:1px solid var(--line);border-radius:16px}
+.col{all:unset;flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;color:var(--muted);font:600 10.5px/1 'Instrument Sans',sans-serif;text-align:center}
+.col:focus-visible{outline:3px solid var(--accent)}
+.col .area{height:120px;display:flex;align-items:flex-end}
+.stack{display:flex;flex-direction:column-reverse;width:clamp(14px,4vw,34px);border-radius:6px;overflow:hidden}
+.stack i{display:block;transition:opacity .3s}
+.col.on{color:var(--ink)}.col.on .stack{outline:2px solid var(--ink);outline-offset:2px}
+#list li{transition:background .2s}
+#list li:hover{background:color-mix(in srgb,var(--accent) 6%,var(--surface))}
+#list .r{background:color-mix(in srgb,var(--c) 14%,transparent);padding:4px 12px;border-radius:99px;align-self:start;white-space:nowrap}
+@media(max-width:640px){#list .r{justify-self:start}nav{gap:12px;padding:9px 14px}nav a{font-size:13.5px}}
+footer{text-align:center;background:var(--surface)}
+footer b{display:block;font:800 28px/1.1 'Bricolage Grotesque',sans-serif;margin-bottom:8px}
+footer a{display:inline-block;margin-top:14px;font-weight:600;text-decoration:none;color:var(--accent)}
+.rv{opacity:0}.rv.in{opacity:1;animation:up .8s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:var(--d,0s)}
+@keyframes up{from{opacity:0;transform:translateY(24px)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}.rv{opacity:1!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<nav aria-label="Sections"><a href="#education">Education</a><a href="#skills">Skills</a><a href="#highlights">Highlights</a><a href="#record">Achievements</a></nav>
+<div id="bar"></div><nav aria-label="Sections"><a href="#education">Education</a><a href="#skills">Skills</a><a href="#highlights">Highlights</a><a href="#record">Achievements</a><button id="theme" aria-label="Switch light or dark theme">◐</button></nav>
 <header class="hero">
-<h1>Arpita<br>Panigrahi</h1>
+<span class="eyebrow">Portfolio · 2026</span>
+<h1>Arpita<br><span class="grad">Panigrahi</span></h1>
 <p class="lede">Computer science student at <b>Vellore Institute of Technology</b>, with a school record of <b>250+ trophies, mementos and medals</b>, from Abacus champion to national and international Olympiad awards.</p>
+<div class="chips" aria-hidden="true"><span>🥇 SOF IEO · International Rank 1</span><span>🏆 SIP Superkid · National Rank 1</span><span>🔬 ISOCSEA · National Diamond</span></div>
+<div class="cta"><a class="btn" href="#record">View achievements</a><a class="btn ghost" href="#skills">See skills</a></div>
+<div class="stats" id="stats"></div>
 <div class="facts">
 <p><strong>5× AES winner</strong>Academic Excellence Scholarship Award</p>
 <p><strong>97.2% in Class X</strong>Board examinations, 2023–24</p>
@@ -83,6 +148,7 @@ footer{padding:40px 0 56px;border-top:1px solid var(--line);color:var(--muted);f
 </header>
 </div>
 
+<div class="marq" aria-hidden="true"><div id="mq"><span>SOF IMO</span><span>SASMO</span><span>IMOCSEA</span><span>ISOCSEA</span><span>ASIAROPE</span><span>Copernicus</span><span>VVM</span><span>NSTSE</span><span>Silverzone</span><span>Crest</span><span>UIMO</span><span>IEnTO</span><span>AMO</span><span>SIP Abacus</span></div></div>
 <section id="education"><div class="wrap">
 <h2>Education</h2>
 <p class="sub">From Abacus classes in primary school to a B.Tech in Computer Science.</p>
@@ -122,11 +188,12 @@ footer{padding:40px 0 56px;border-top:1px solid var(--line);color:var(--muted);f
 <p class="sub">Every award by class. Pick a year, or filter by level.</p>
 <div class="controls years" id="years" role="group" aria-label="Class"></div>
 <div class="controls" id="levels" role="group" aria-label="Level"></div>
+<div id="chart" role="group" aria-label="Awards per class, click a bar to filter"></div>
 <p id="meta" aria-live="polite"></p>
 <ul id="list"></ul>
 </div></section>
 
-<footer><div class="wrap">Arpita Panigrahi · Portfolio</div></footer>
+<footer><div class="wrap"><b>Arpita Panigrahi</b>Computer Science, VIT · Olympiad achiever · Portfolio 2026<br><a href="#">Back to top ↑</a></div></footer>
 
 <script>
 const L={I:["International","--lI"],N:["National","--lN"],S:["State","--lS"],Z:["Zonal","--lZ"],O:["School","--lZ"]};
@@ -178,6 +245,23 @@ function render(){
  if(!n)list.innerHTML='<li class="empty" style="display:block">No awards at this level in this year. Try another filter.</li>';
  meta.textContent=n+" award"+(n===1?"":"s")+" shown"+(year==="All"?" across all years":" in "+year)+". Plus 250+ trophies, mementos and medals overall.";
 }
+const aw=all.filter(i=>i[0]!=="Board examinations");
+const st=document.getElementById('stats');
+[[250,'+','trophies, mementos and medals'],[aw.length,'','awards listed below'],[aw.filter(i=>i[2]==='I').length,'','international awards'],[aw.filter(i=>/Rank 1(?!\d)/.test(i[1])).length,'','Rank 1 finishes']].forEach(([n,s,t])=>{const d=document.createElement('div');d.innerHTML='<b data-n="'+n+'" data-s="'+s+'">0</b><span>'+t+'</span>';st.appendChild(d)});
+const ch=document.getElementById('chart'),ks=Object.keys(D).reverse(),mx=Math.max(...ks.map(k=>D[k].length));
+ks.forEach(k=>{const b=document.createElement('button');b.type='button';b.className='col';b.dataset.v=k;b.title=k+': '+D[k].length+' awards';b.setAttribute('aria-label',k+', '+D[k].length+' awards');
+ const seg=Object.keys(L).map(l=>{const c=D[k].filter(i=>i[2]===l).length;return c?'<i data-l="'+l+'" style="height:'+c/mx*120+'px;background:var('+L[l][1]+')"></i>':''}).join('');
+ b.innerHTML='<span>'+D[k].length+'</span><span class="area"><span class="stack">'+seg+'</span></span><span>'+(k.startsWith('Abacus')?'Ab.':k.split(' · ')[0].replace('Class ',''))+'</span>';
+ b.onclick=()=>{year=year===k?'All':k;render()};ch.appendChild(b)});
+function paintChart(){ch.querySelectorAll('.col').forEach(c=>{c.classList.toggle('on',c.dataset.v===year);c.querySelectorAll('i').forEach(i=>i.style.opacity=lvl==='All'||i.dataset.l===lvl?1:.18)})}
+const _r=render;render=()=>{_r();paintChart()};
+const mq=document.getElementById('mq');mq.innerHTML+=mq.innerHTML;
+const cnt=e=>{const n=+e.dataset.n,s=e.dataset.s;if(matchMedia('(prefers-reduced-motion:reduce)').matches){e.textContent=n+s;return}let t0;const f=t=>{t0=t0||t;const p=Math.min((t-t0)/1200,1);e.textContent=Math.round(n*(1-Math.pow(1-p,3)))+s;if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)};
+const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');if(x.target.dataset.n)cnt(x.target);io.unobserve(x.target)}}),{threshold:.15});
+document.querySelectorAll('section h2,.sub,.edu article,.skills>div,.hl>div,.facts p,.controls,#chart,.stats div').forEach((e,i)=>{e.classList.add('rv');e.style.setProperty('--d',(i%5)*70+'ms');io.observe(e)});
+document.querySelectorAll('[data-n]').forEach(e=>io.observe(e));
+addEventListener('scroll',()=>{const h=document.documentElement;h.style.setProperty('--p',h.scrollTop/((h.scrollHeight-h.clientHeight)||1))},{passive:true});
+document.getElementById('theme').onclick=()=>{const h=document.documentElement,d=h.dataset.theme?h.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;h.dataset.theme=d?'light':'dark'};
 render();
 </script>
 </body>
