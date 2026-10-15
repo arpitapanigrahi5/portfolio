@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Arpita Panigrahi — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2F4F8;--surface:#fff;--ink:#101935;--muted:#566079;--accent:#2B44FF;--on-accent:#fff;--line:#D5DAE6;--lI:#D98E00;--lN:#2B44FF;--lS:#0E9F8E;--lZ:#8791A8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0D1226;--surface:#151C38;--ink:#EDF0FA;--muted:#9AA3BF;--accent:#8C9BFF;--on-accent:#0D1226;--line:#263055;--lI:#F2B531;--lN:#8C9BFF;--lS:#3CCDB9;--lZ:#8791A8;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0D1226;--surface:#151C38;--ink:#EDF0FA;--muted:#9AA3BF;--accent:#8C9BFF;--on-accent:#0D1226;--line:#263055;--lI:#F2B531;--lN:#8C9BFF;--lS:#3CCDB9;--lZ:#8791A8;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 "Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque","Instrument Sans",system-ui,sans-serif;margin:0;line-height:1.05;letter-spacing:-.02em}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+nav{display:flex;gap:22px;padding:22px 0;font-weight:500;font-size:15px;flex-wrap:wrap}
+nav a{text-decoration:none;color:var(--muted)}nav a:hover{color:var(--ink)}
+header.hero{padding:56px 0 72px}
+.hero h1{font-weight:800;font-size:clamp(52px,12vw,132px);letter-spacing:-.045em;line-height:.92}
+.hero .lede{max-width:34em;margin:28px 0 0;font-size:clamp(18px,2.4vw,22px);color:var(--muted)}
+.hero .lede b{color:var(--ink);font-weight:600}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0;margin-top:48px;border-top:2px solid var(--ink)}
+.facts p{margin:0;padding:18px 24px 18px 0;font-size:16px;color:var(--muted)}
+.facts strong{display:block;color:var(--ink);font:700 20px/1.2 "Bricolage Grotesque",sans-serif;margin-bottom:4px}
+section{padding:64px 0;border-top:1px solid var(--line)}
+section>.wrap>h2{font-size:clamp(34px,5vw,52px);font-weight:800;margin-bottom:12px}
+.sub{color:var(--muted);margin:0 0 32px;max-width:40em}
+/* Education */
+.edu{display:grid;gap:0}
+.edu article{display:grid;grid-template-columns:150px 1fr;gap:8px 28px;padding:22px 0;border-top:1px solid var(--line)}
+.edu article:first-child{border-top:0}
+.edu time{color:var(--muted);font-size:15px;padding-top:4px}
+.edu h3{font-size:24px;font-weight:700}
+.edu p{margin:4px 0 0;color:var(--muted)}
+.tag{display:inline-block;margin:10px 8px 0 0;padding:3px 12px;border:1.5px solid var(--ink);border-radius:99px;font-size:14px;font-weight:600}
+/* Skills */
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:36px}
+.skills h3{font-size:22px;font-weight:700;margin-bottom:4px}
+.skills small{display:block;color:var(--muted);margin-bottom:14px;font-size:15px}
+.skills ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.skills li{background:var(--surface);border:1px solid var(--line);padding:6px 14px;border-radius:8px;font-weight:500;font-size:15px}
+/* Highlights */
+.hl{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px 36px;margin-bottom:56px}
+.hl div{border-left:4px solid var(--accent);padding-left:16px}
+.hl h3{font-size:20px;font-weight:700;margin-bottom:4px}
+.hl p{margin:0;color:var(--muted);font-size:15.5px}
+/* Ledger */
+.controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+.controls button{font:600 15px/1 "Instrument Sans",sans-serif;cursor:pointer;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:99px;padding:10px 16px}
+.controls button:hover{border-color:var(--ink)}
+.controls button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.years button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.key{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;vertical-align:baseline}
+#meta{margin:18px 0 8px;color:var(--muted);font-size:15px}
+#list{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+#list li{display:grid;grid-template-columns:1fr auto;gap:4px 20px;padding:14px 20px 14px 16px;border-top:1px solid var(--line);border-left:6px solid var(--c)}
+#list li:first-child{border-top:0}
+#list .n{font-weight:600}
+#list .r{font-weight:600;color:var(--c);text-align:right}
+#list .note{grid-column:1/-1;color:var(--muted);font-size:14.5px}
+.empty{padding:24px;color:var(--muted)}
+footer{padding:40px 0 56px;border-top:1px solid var(--line);color:var(--muted);font-size:15px}
+@media(max-width:640px){.edu article{grid-template-columns:1fr}#list li{grid-template-columns:1fr}#list .r{text-align:left}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav aria-label="Sections"><a href="#education">Education</a><a href="#skills">Skills</a><a href="#highlights">Highlights</a><a href="#record">Achievements</a></nav>
+<header class="hero">
+<h1>Arpita<br>Panigrahi</h1>
+<p class="lede">Computer science student at <b>Vellore Institute of Technology</b>, with a school record of <b>250+ trophies, mementos and medals</b>, from Abacus champion to national and international Olympiad awards.</p>
+<div class="facts">
+<p><strong>5× AES winner</strong>Academic Excellence Scholarship Award</p>
+<p><strong>97.2% in Class X</strong>Board examinations, 2023–24</p>
+<p><strong>Abacus State and National Champion</strong>SIP Abacus, 2015–19</p>
+</div>
+</header>
+</div>
+
+<section id="education"><div class="wrap">
+<h2>Education</h2>
+<p class="sub">From Abacus classes in primary school to a B.Tech in Computer Science.</p>
+<div class="edu">
+<article><time>Jul 2026 – May 2030</time><div><h3>Vellore Institute of Technology</h3><p>Bachelor of Technology, Computer Science and Engineering</p></div></article>
+<article><time>Apr 2022 – Jun 2026</time><div><h3>Bhavan Vidyalaya Panchkula</h3><p>Secondary and Senior Secondary Education</p><span class="tag">Grade: 97.2%</span></div></article>
+<article><time>Apr 2011 – Mar 2022</time><div><h3>Sri Aurobindo Public School, India</h3><p>Primary and Secondary Education</p><span class="tag">Teamwork</span><span class="tag">Abacus</span><span class="tag">Leadership</span></div></article>
+</div>
+</div></section>
+
+<section id="skills"><div class="wrap">
+<h2>Skills</h2>
+<p class="sub">Grouped by where I learned them.</p>
+<div class="skills">
+<div><h3>Project management</h3><small>Foundations of Project Management</small><ul><li>Project Management</li><li>Project Planning</li><li>Project Estimation</li><li>Project Management Office (PMO)</li></ul></div>
+<div><h3>Programming</h3><small>Programming for Everybody (Getting Started with Python)</small><ul><li>Python</li><li>Computational Thinking</li><li>Debugging</li><li>Programming Principles</li></ul></div>
+<div><h3>People and mind</h3><small>Sri Aurobindo Public School, India</small><ul><li>Leadership</li><li>Teamwork</li><li>Abacus</li></ul></div>
+</div>
+</div></section>
+
+<section id="highlights"><div class="wrap">
+<h2>Highlights</h2>
+<p class="sub">The moments that stand out most in the record below.</p>
+<div class="hl">
+<div><h3>SIP Superkid</h3><p>National Rank 1 in 2022–23, with a cheque of Rs. 10,000.</p></div>
+<div><h3>VVM National Rank 2</h3><p>Government of India talent search, 2021–22. Rs. 36,000 and the Bhaskar Scholarship.</p></div>
+<div><h3>E-Summit, IIT Bombay</h3><p>Qualified, and reached Level 2 of the International Entrepreneurship Olympiad (IEnTO).</p></div>
+<div><h3>Abacus champion</h3><p>State (Punjab) and National Champion across the SIP Abacus years, 2015–19.</p></div>
+<div><h3>International Rank 1</h3><p>SOF IEO and SOF IGKO, plus Silverzone SKGKO, all in Class VIII.</p></div>
+<div><h3>VVM State Rank 1</h3><p>Class XI, with a cash prize of Rs. 5,000.</p></div>
+</div>
+
+</div></section>
+
+<section id="record"><div class="wrap">
+<h2>Achievements</h2>
+<p class="sub">Every award by class. Pick a year, or filter by level.</p>
+<div class="controls years" id="years" role="group" aria-label="Class"></div>
+<div class="controls" id="levels" role="group" aria-label="Level"></div>
+<p id="meta" aria-live="polite"></p>
+<ul id="list"></ul>
+</div></section>
+
+<footer><div class="wrap">Arpita Panigrahi · Portfolio</div></footer>
+
+<script>
+const L={I:["International","--lI"],N:["National","--lN"],S:["State","--lS"],Z:["Zonal","--lZ"],O:["School","--lZ"]};
+// [name, result, level, note]
+const D={
+"Class XII · 2025–26":[
+["Copernicus Olympiad, Mathematics (7th)","International Silver","I","Preliminary Round, Jan 2026"],["Copernicus Olympiad, Physics and Astronomy (7th)","International Gold","I","Local Round, Nov 2025"],["IMOCSEA (Mathematics, Southeast Asia)","National Gold","N","National Round, Aug 2025"],["ISOCSEA (Science, Southeast Asia)","National Diamond","N","National Round, Jul 2025"],["AMO (American Mathematical Olympiad)","International Bronze","I","Grade 12, 2025"],["ASIAROPE Science Olympiad","Diamond Award","N","National Round, May 2025"],["ASIAROPE Maths Olympiad","Silver Award","N","National Round, May 2025"],["Music","Certificate of Merit","O","For proficiency in Music, awarded by the school"]],
+"Class XI · 2024–25":[
+["IMOCSEA (Mathematics, Southeast Asia)","National Silver","N"],["ISOCSEA (Science, Southeast Asia)","National Silver","N"],["Copernicus Olympiad, Mathematics (6th)","International Bronze","I","Preliminary Round, Feb 2025"],["SASMO","International Silver","I"],["VNJSO (Vanda Junior Science Olympiad)","International Bronze","I"],["VVM (Vidyarthi Vigyan Manthan)","State Rank 1","S","Cash prize of Rs. 5,000"],["UEO","Zonal Excellence Award (Gold)","Z"],["UGKO","Zonal Excellence Award (Gold)","Z"],["UCTO","Zonal Excellence Award (Gold)","Z"]],
+"Class X · 2023–24":[
+["Board examinations","97.2%","Z","Overall result"],["Copernicus Maths Olympiad","International Silver","I"],["SASMO 2024","International Bronze","I"],["ASIAROPE Science Olympiad","Diamond Award","I"],["ASIAROPE Maths Olympiad","International Bronze","I"],["AMO (American Mathematical Olympiad)","International Bronze","I"],["UCTO (Unicus Critical Thinking)","International Rank 3","I"],["Crest CSO","International Rank 2","I"],["UIMO (Unified Council)","National Rank 21","N"],["UCO (Unified Council)","National Rank 8","N"],["UIEO (Unified Council)","National Rank 66","N"],["NSTSE (Unified Council)","State Rank 1","S"],["iOEL (Silverzone English)","State Rank 1","S"],["Unicus Maths Olympiad (UMO)","Zonal Rank 1","Z"],["Unicus Science Olympiad (USO)","Zonal Rank 1","Z"],["CEMMO (Crest Edufund Mental Maths)","Zonal Rank 1","Z"],["Hummingbird HSO","Rank 1","Z"],["Crest CCO","Zonal Rank 8","Z"],["Crest CMO","Zonal Rank 17","Z"],["Crest CEO","Zonal Rank 17","Z"],["ALLEN Champ","Assured Winner","Z"]],
+"Class IX · 2022–23":[
+["SIP Superkid","National Rank 1","N","Cheque of Rs. 10,000"],["Hummingbird Science Olympiad","National Rank 1","N"],["Hummingbird Maths Olympiad","National Rank 3","N"],["UCO (Unified Council Cyber)","National Rank 4","N"],["UIEO (Unified International English)","National Rank 33","N"],["SASMO","International Bronze","I"],["Vanda International Science Olympiad","International Bronze","I"],["CEO (Crest English)","International Rank 3","I"],["SOF IEO","International Rank 59","I"],["SOF IMO","International Rank 61","I"],["E-Summit, IIT Bombay","Qualified","N","Also reached Level 2 of IEnTO (International Entrepreneurship Olympiad)"],["Silverzone Smart Kid GK Olympiad","State Rank 4","S"],["IIO (International Informatics)","State Rank 7","S"],["Silverzone ABHO","State Rank 14","S"]],
+"Class VIII · 2021–22":[
+["SOF IEO","International Rank 1","I"],["SOF IGKO","International Rank 1","I"],["Silverzone SKGKO","International Rank 1","I"],["SOF ISSO","International Rank 5","I"],["VVM (Govt. of India)","National Rank 2","N","Rs. 36,000 and the Bhaskar Scholarship"],["VVM (Govt. of India)","State Rank 2","S","Rs. 3,000"],["Silverzone iOEL","State Rank 1","S"],["Silverzone IIO","State Rank 1","S"],["Silverzone iOS","State Rank 1","S"],["Silverzone iOM","State Rank 2","S"],["NSTSE (Unified Council)","State Rank 1","S"],["UIMO (Unified Council)","State Rank 1","S"],["CSC Maths Olympiad (Govt. of India)","State Rank 1","S","Children's Science Congress"],["UIEO (Unified Council)","Zonal Rank 2","Z"],["SOF IMO","Zonal Rank 6","Z"],["SOF NSO","Zonal Rank 5","Z"],["SOF NCO","Zonal Rank 5","Z"],["Crest CRO","North Zone Rank 4","Z"],["Crest CMO","North Zone Rank 4","Z"],["AES (Academic Excellence Scholarship)","Winner","I","Awarded by SOF"]],
+"Class VII · 2020–21":[
+["SOF NSO","International Rank 6","I"],["SOF IEO","International Rank 9","I"],["SOF IGKO","International Rank 31","I"],["SOF IMO","International Rank 58","I"],["UIMO (Unified Council)","State Rank 1","S"],["UIEO (Unified Council)","State Rank 1","S"],["NSTSE (Unified Council)","State Rank 2","S"],["CSC (Children's Science Congress) Level II","Rank 2","S"],["AES (Academic Excellence Scholarship)","Winner","I","Awarded by SOF"]],
+"Class VI · 2019–20":[
+["AES (Academic Excellence Scholarship)","Trophy","I","Cheque of Rs. 5,000 from SOF"],["SOF IMO","Zonal Rank 1","Z","Cheque of Rs. 5,000"],["SOF NSO","Zonal Rank 2","Z","Cheque of Rs. 2,500"],["SOF NCO","Zonal Rank 2","Z","Cheque of Rs. 2,500"]],
+"Class V · 2018–19":[
+["SOF NSO","Zonal Rank 1","Z","Cheque of Rs. 5,000"],["SOF NCO","Zonal Rank 1","Z","Cheque of Rs. 5,000"]],
+"Class IV · 2017–18":[
+["AES (Academic Excellence Scholarship)","Trophy","I","Cheque of Rs. 5,000 from SOF"],["SOF IMO","Zonal Rank 1","Z","Cheque of Rs. 5,000"],["SOF NSO","Zonal Rank 1","Z","Cheque of Rs. 5,000"],["SOF NCO","Zonal Rank 1","Z","Cheque of Rs. 5,000"],["SOF IGKO","Zonal Rank 4","Z"]],
+"Class III · 2016–17":[
+["AES (Academic Excellence Scholarship)","Trophy","I","Cheque of Rs. 5,000 from SOF"],["SOF IMO","International Rank 4","I","Also Zonal Rank 1. Cheque of Rs. 5,000"]],
+"Abacus · 2015–19":[
+["SIP Abacus","National Champion","N"],["SIP Abacus","State (Punjab) Champion","S"]]
+};
+const yEl=document.getElementById("years"),lEl=document.getElementById("levels"),list=document.getElementById("list"),meta=document.getElementById("meta");
+let year="All",lvl="All";
+const all=Object.values(D).flat();
+function btn(parent,label,val,kind){const b=document.createElement("button");b.type="button";b.setAttribute("aria-pressed","false");b.dataset.v=val;
+ if(kind==="l"&&L[val]){b.innerHTML='<span class="key" style="background:var('+L[val][1]+')"></span>'+label}else b.textContent=label;
+ b.onclick=()=>{if(kind==="y")year=val;else lvl=val;render()};parent.appendChild(b)}
+btn(yEl,"All years","All","y");Object.keys(D).forEach(k=>btn(yEl,k.split(" · ")[0],k,"y"));
+btn(lEl,"All levels","All","l");Object.keys(L).forEach(k=>btn(lEl,L[k][0],k,"l"));
+function render(){
+ yEl.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===year));
+ lEl.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===lvl));
+ const groups=year==="All"?Object.entries(D):[[year,D[year]]];
+ list.innerHTML="";let n=0;
+ groups.forEach(([g,items])=>{
+  const rows=items.filter(i=>lvl==="All"||i[2]===lvl);
+  if(!rows.length)return;
+  if(year==="All"){const h=document.createElement("li");h.style.cssText="display:block;background:var(--bg);font:700 15px 'Instrument Sans',sans-serif;border-left-color:var(--ink)";h.textContent=g;list.appendChild(h)}
+  rows.forEach(i=>{n++;const li=document.createElement("li");li.style.setProperty("--c","var("+L[i[2]][1]+")");
+   li.innerHTML='<span class="n"></span><span class="r"></span>'+(i[3]?'<span class="note"></span>':"");
+   li.querySelector(".n").textContent=i[0];li.querySelector(".r").textContent=i[1];if(i[3])li.querySelector(".note").textContent=i[3];list.appendChild(li)})});
+ if(!n)list.innerHTML='<li class="empty" style="display:block">No awards at this level in this year. Try another filter.</li>';
+ meta.textContent=n+" award"+(n===1?"":"s")+" shown"+(year==="All"?" across all years":" in "+year)+". Plus 250+ trophies, mementos and medals overall.";
+}
+render();
+</script>
+</body>
+</html>
