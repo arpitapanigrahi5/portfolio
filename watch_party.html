@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Watch Party</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#fdf3ee;--sf:#fff;--tx:#1b2233;--mu:#6b7488;--ac:#ff6a4d;--ac2:#ff4f8b;--bd:#ecdcd3;--ok:#1a9d5c;--bad:#d93a3a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12141c;--sf:#1b1f2b;--tx:#eef0f6;--mu:#98a0b5;--bd:#2c3243;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12141c;--sf:#1b1f2b;--tx:#eef0f6;--mu:#98a0b5;--bd:#2c3243;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 18px;border-bottom:1px solid var(--bd)}
+h1{font-size:20px;margin:0;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sp{flex:1}.pill{background:var(--sf);border:1px solid var(--bd);border-radius:99px;padding:4px 12px;font-size:13px}
+button,input,select{font:inherit;color:var(--tx)}
+button{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:6px 12px;cursor:pointer}
+button:hover{border-color:var(--ac)}button.p{background:linear-gradient(90deg,var(--ac),var(--ac2));color:#fff;border:0}
+input,select{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:6px 10px;width:100%}
+main{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr);gap:16px;padding:16px 18px;max-width:1280px;margin:auto}
+@media(max-width:860px){main{grid-template-columns:1fr}}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:12px}
+#stage{position:relative;border-radius:12px;overflow:hidden;background:#000}
+canvas{width:100%;display:block;aspect-ratio:16/9}
+#fx{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.fl{position:absolute;bottom:8%;font-size:34px;animation:up 2.4s ease-out forwards}
+@keyframes up{to{transform:translateY(-260px);opacity:0}}
+.ctl{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
+input[type=range]{padding:0;border:0;background:none}#seek{flex:1;min-width:140px}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}.tabs button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+#panel{max-height:520px;overflow:auto}
+.row{display:flex;gap:8px;align-items:center;margin:6px 0}.mu{color:var(--mu);font-size:13px}
+.m{padding:4px 0;border-bottom:1px dashed var(--bd);word-break:break-word}
+.chip{padding:3px 10px;border-radius:99px;border:1px solid var(--bd);font-size:13px;cursor:pointer;background:var(--sf)}.chip.on{background:var(--ac);color:#fff}
+.mv{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--bd);align-items:center}
+.th{width:44px;height:60px;border-radius:6px;flex:none}
+.bar{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--ac),var(--ac2))}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:3px 6px;text-align:left;border-bottom:1px solid var(--bd)}
+.ok{color:var(--ok)}.bad{color:var(--bad)}
+</style></head><body>
+<header><h1>🍿 Watch Party</h1><span class="pill">Room <b id="code">—</b></span>
+<button id="cp">Copy invite</button><input id="jc" placeholder="Room code" style="width:110px"><button id="jb">Join</button><button id="nr">New room</button>
+<span class="sp"></span><span class="pill" id="st">offline</span><span class="pill" id="pe">1 here</span></header>
+<main>
+<section>
+<div class="card"><div id="stage"><canvas id="cv" width="960" height="540"></canvas><div id="fx"></div></div>
+<div class="ctl"><button id="pp" class="p">▶</button><input id="seek" type="range" min="0" max="100" step="0.1" value="0"><span id="tm" class="mu">0:00</span></div>
+<div class="ctl" id="rx"></div>
+<div class="ctl mu"><span id="nw"></span><span class="sp"></span><span id="dr">drift 0 ms</span><button id="jit" title="Nudge this client 1.2s off to watch drift correction">Inject drift</button></div>
+<div class="ctl mu" id="pl2"></div></div>
+</section>
+<aside class="card"><div class="tabs" id="tabs"></div><div id="panel"></div></aside>
+</main>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const MV=[["Neon Harbor","Sci-Fi",2041,8.1,"Thriller",5400],["The Last Lighthouse","Drama",2019,7.9,"Mystery",6000],["Paper Planes","Comedy",2022,7.2,"Family",4800],["Desert Run","Action",2020,7.0,"Adventure",5700],["Midnight Orchard","Horror",2023,6.8,"Mystery",5100],["Cosmic Kitchen","Animation",2024,8.4,"Family",4500],["Velvet Skies","Romance",2018,7.4,"Drama",6300],["Iron Tide","Action",2021,7.7,"War",6600],["Quantum Cafe","Sci-Fi",2025,7.5,"Comedy",5400],["Echoes of Rome","Documentary",2017,8.0,"History",3600],["Last Train to Kyoto","Drama",2016,8.3,"Romance",7200],["Pixel Pirates","Animation",2022,7.1,"Adventure",4200],["Shadow Ledger","Thriller",2020,7.8,"Crime",5900],["Laugh Track","Comedy",2023,6.9,"Family",4600],["Deep Blue","Documentary",2021,8.2,"Nature",3300],["Ghost Frequency","Horror",2019,6.6,"Sci-Fi",5200]].map((m,i)=>({i,t:m[0],g:m[1],y:m[2],r:m[3],tag:m[4],d:m[5],h:(i*47)%360}));
+const EM=["👍","😂","😮","❤️","🔥","👏"],uid=()=>Math.random().toString(36).slice(2,8);
+const me={id:uid(),name:"Guest"+(10+Math.random()*89|0)};
+let R=null,off=0,code="",S={vid:0,playing:false,pos:0,at:Date.now(),v:[0,""],host:me.id},PL=[],POLL=null,VOTES={},peers=[],ctrl=[],rtt=[],chat=[],tab="chat",q="",gen="All",minR=0,drift=0,nudged=0,tests=[],fail=[];
+const now=()=>Date.now()+off,cur=()=>Math.max(0,Math.min(MV[S.vid].d,S.playing?S.pos+(now()-S.at)/1000:S.pos)),send=(t,d)=>{try{R&&R.emit(t,d).catch(()=>{})}catch(e){}};
+const newer=(a,b)=>a[0]>b[0]||(a[0]===b[0]&&a[1]>b[1]),fmt=s=>{s=s|0;return (s/3600|0?(s/3600|0)+":":"")+String(s/60%60|0).padStart(2,"0")+":"+String(s%60).padStart(2,"0")};
+const p95=a=>a.length?[...a].sort((x,y)=>x-y)[Math.min(a.length-1,Math.ceil(a.length*.95)-1)]:0;
+function act(p){const t=now(),s={...S,...p,at:t,v:[t,me.id]};if(!("pos"in p))s.pos=cur();S=s;send("state",{s,t});ui()}
+function adopt(s){if(newer(s.v,S.v)){S={...S,...s};ui()}}
+const snap=()=>({S,PL,POLL,VOTES});
+const isH=()=>S.host===me.id||S.host===me.peerId;
+function hostTick(){if(isH()){send("hb",{pos:cur(),t:now(),v:S.v,playing:S.playing,vid:S.vid,host:S.host});if(S.playing&&cur()>=MV[S.vid].d-.2)next()}}
+function next(){if(PL.length){const n=PL.shift();pl();act({vid:n,pos:0,playing:true})}else act({pos:MV[S.vid].d,playing:false})}
+function pl(){send("pl",{PL,ts:now()});ui()}
+function ping(){send("ping",{id:uid(),t0:Date.now()})}
+async function connect(c){
+ code=(c||"").toUpperCase().replace(/[^A-Z0-9]/g,"")||uid().toUpperCase().slice(0,5);
+ try{history.replaceState(null,"","#"+code)}catch(e){}
+ $("#code").textContent=code;chat=[];S={vid:0,playing:false,pos:0,at:Date.now(),v:[0,""],host:me.id};PL=[];POLL=null;VOTES={};
+ try{if(R&&R.leave)R.leave()}catch(e){}
+ let lobby=null;try{lobby=await claude.use("room")}catch(e){}
+ if(!lobby){$("#st").textContent="solo (no live room)";ui();return}
+ try{R=await lobby.join("wp-"+code)}catch(e){R=null;$("#st").textContent="solo (join failed)";return}
+ $("#st").textContent="live";
+ const on=(t,f)=>R.on(t,m=>{if(!m.isMe)f(m)},e=>{fail.push(e.message);$("#st").textContent="reconnecting…"});
+ on("state",m=>{ctrl.push(now()-m.data.t);adopt(m.data.s)});
+ on("hb",m=>{const h=m.data;if(newer(h.v,S.v)){S={...S,vid:h.vid,playing:h.playing,pos:h.pos,at:h.t,v:h.v,host:h.host}}else if(h.v.join()===S.v.join()){S.host=h.host;const exp=h.pos+(h.playing?(now()-h.t)/1000:0);drift=(cur()-exp)*1000;if(Math.abs(drift)>150){nudged++;S.pos=exp;S.at=now()}}ui()});
+ on("pl",m=>{PL=m.data.PL;ui()});
+ on("chat",m=>{chat.push(m.data);ui()});
+ on("react",m=>fly(m.data.e));
+ on("poll",m=>{POLL=m.data.p;VOTES={};ui()});
+ on("vote",m=>{VOTES[m.peer]=m.data.i;ui()});
+ on("hello",m=>{if(isH())send("snap",snap())});
+ on("snap",m=>{const d=m.data;if(newer(d.S.v,S.v)||S.v[0]===0)S={...S,...d.S};if(!PL.length)PL=d.PL;if(!POLL){POLL=d.POLL;VOTES=d.VOTES||{}}ui()});
+ on("ping",m=>send("pong",{id:m.data.id,t0:m.data.t0,to:m.peer,th:now()}));
+ on("pong",m=>{const d=m.data;if(d.to!==me.peerId&&!mine(d))return;const r=Date.now()-d.t0;rtt.push(r/2);if(m.peer===S.host)off=d.th+r/2-Date.now();tests.length<200&&tests.push(r/2);ui()});
+ R.onPeers(ch=>{const was=peers.length;peers=ch.peers;if(ch.joined.some(p=>!p.isMe)&&isH())send("snap",snap());
+  const ids=peers.map(p=>p.peer).sort();const meP=peers.find(p=>p.isMe);if(meP)me.peerId=meP.peer;
+  if(!isH()&&!peers.some(p=>p.peer===S.host)&&ids[0]===me.peerId)act({host:me.peerId});
+  ui()});
+ R.presence({name:me.name});send("hello",{});setTimeout(ping,500);
+}
+const mine=d=>true;
+function fly(e){const el=document.createElement("span");el.className="fl";el.textContent=e;el.style.left=10+Math.random()*80+"%";$("#fx").append(el);setTimeout(()=>el.remove(),2400)}
+function fuzzy(m,s){if(!s)return 1;s=s.toLowerCase();const h=(m.t+" "+m.g+" "+m.tag+" "+m.y).toLowerCase();if(h.includes(s))return 3;let k=0;let sub=1,j=0;for(const c of s){j=h.indexOf(c,j);if(j<0){sub=0;break}j++}
+ const lev=(a,b)=>{const d=[...Array(b.length+1).keys()];for(let i=1;i<=a.length;i++){let p=d[0];d[0]=i;for(let j=1;j<=b.length;j++){const t=d[j];d[j]=Math.min(d[j]+1,d[j-1]+1,p+(a[i-1]===b[j-1]?0:1));p=t}}return d[b.length]};
+ const best=Math.min(...h.split(/\s+/).map(w=>lev(s,w.slice(0,s.length+1))));return sub&&s.length>2?2:best<=Math.max(1,s.length>>2)?1.5:0}
+const names=()=>Object.fromEntries(peers.map(p=>[p.peer,p.presence&&p.presence.name||"Guest"]));
+function ui(){const m=MV[S.vid];$("#pp").textContent=S.playing?"⏸":"▶";$("#seek").max=m.d;$("#nw").textContent="Now: "+m.t;
+ $("#pe").textContent=Math.max(1,peers.length)+" here";const h=peers.find(p=>p.peer===S.host);
+ $("#pl2").innerHTML="Host: <b>"+esc(isH()?"you":h?(h.presence.name||"Guest"):"—")+"</b> · Queue: "+PL.length;
+ if(!panelBusy())draw()}
+const panelBusy=()=>document.activeElement&&document.activeElement.closest&&document.activeElement.closest("#panel")&&/INPUT|SELECT/.test(document.activeElement.tagName);
+function draw(){const T=[["chat","💬 Chat"],["disc","🔎 Discover"],["q","🎞 Queue"],["poll","📊 Poll"],["stats","⏱ Stats"],["people","👥"]];
+ $("#tabs").innerHTML=T.map(t=>`<button data-t="${t[0]}" class="${tab==t[0]?"on":""}">${t[1]}</button>`).join("");
+ const P=$("#panel"),nm=names();let h="";
+ if(tab=="chat")h=`<div id="cl" style="max-height:340px;overflow:auto">${chat.map(c=>`<div class="m"><b>${esc(c.n)}</b> ${esc(c.m)}</div>`).join("")||'<div class="mu">No messages yet.</div>'}</div><div class="row"><input id="ci" maxlength="300" placeholder="Say something…"><button id="cs" class="p">Send</button></div>`;
+ if(tab=="disc"){const g=["All",...new Set(MV.map(m=>m.g))];const L=MV.map(m=>({m,s:fuzzy(m,q)})).filter(x=>x.s>0&&(gen=="All"||x.m.g==gen)&&x.m.r>=minR).sort((a,b)=>b.s-a.s||b.m.r-a.m.r);
+  h=`<input id="qi" placeholder="Fuzzy search (try 'nean harbr')" value="${esc(q)}"><div class="row" style="flex-wrap:wrap">${g.map(x=>`<span class="chip ${gen==x?"on":""}" data-g="${x}">${x}</span>`).join("")}</div><div class="row mu">Min rating ${minR}<input id="mr" type="range" min="0" max="9" step=".5" value="${minR}"></div>`+
+  (L.map(({m})=>`<div class="mv"><div class="th" style="background:linear-gradient(160deg,hsl(${m.h} 80% 55%),hsl(${m.h+60} 70% 25%))"></div><div style="flex:1"><b>${m.t}</b><div class="mu">${m.g} · ${m.tag} · ${m.y} · ★${m.r} · ${fmt(m.d)}</div></div><button data-w="${m.i}" class="p">Watch</button><button data-a="${m.i}">+</button></div>`).join("")||'<div class="mu">No matches.</div>')}
+ if(tab=="q")h=PL.length?PL.map((i,n)=>`<div class="mv"><b style="flex:1">${n+1}. ${MV[i].t}</b><button data-w="${i}">Play</button><button data-r="${n}">✕</button></div>`).join(""):'<div class="mu">Shared queue is empty. Add titles from Discover.</div>';
+ if(tab=="poll"){const tot=Object.values(VOTES);h=POLL?`<b>${esc(POLL.q)}</b>`+POLL.o.map((o,i)=>{const c=tot.filter(v=>v==i).length;return `<div class="row"><button data-v="${i}" style="flex:1;text-align:left">${esc(o)}</button><span>${c}</span></div><div class="bar" style="width:${tot.length?c/tot.length*100:0}%"></div>`}).join("")+`<div class="mu">${tot.length} vote(s)</div><hr>`:"";
+  h+=`<input id="pq" placeholder="Question, e.g. What next?"><input id="po" placeholder="Options, comma separated" style="margin-top:6px"><div class="row"><button id="pb" class="p">Start poll</button><button id="pm">Use top 4 movies</button></div>`}
+ if(tab=="stats"){const a=ctrl.slice(-100),b=rtt.slice(-100);h=`<table><tr><th>Metric</th><th>p50</th><th>p95</th><th>n</th></tr><tr><td>Control propagation (ms)</td><td>${[...a].sort((x,y)=>x-y)[a.length>>1]?.toFixed(0)??"–"}</td><td class="${p95(a)<=250?"ok":"bad"}">${a.length?p95(a).toFixed(0):"–"}</td><td>${a.length}</td></tr><tr><td>Ping one-way (ms)</td><td>${[...b].sort((x,y)=>x-y)[b.length>>1]?.toFixed(0)??"–"}</td><td class="${p95(b)<=250?"ok":"bad"}">${b.length?p95(b).toFixed(0):"–"}</td><td>${b.length}</td></tr></table><div class="row"><button id="lt">Run 30-ping test</button></div><p class="mu">Drift now: ${drift.toFixed(0)} ms (target ≤ 500 after correction). Corrections applied: ${nudged}. Clock offset vs host: ${off.toFixed(0)} ms. Connection errors: ${fail.length}.</p>
+  <p class="mu"><b>Method.</b> Controls carry a host-aligned timestamp; receivers log arrival minus send time. Clocks align via ping/pong against the host (offset = host time + RTT/2). Pings measure RTT/2 to every peer. Test conditions: browser tabs on one network, ≥10 peers supported by room channel; numbers reflect this device's session, not a lab benchmark.</p>
+  <p class="mu"><b>Failure handling.</b> Concurrent actions resolve by (timestamp, peer id) last-writer-wins. The host sends a full snapshot to late joiners and sends heartbeats every 2 s; clients correct drift over 150 ms. On disconnect the room auto-rejoins on reload with #code; if the host leaves, the lowest peer id becomes host. Queue advances automatically when a title ends.</p>`}
+ if(tab=="people")h=(peers.map(p=>`<div class="row"><b style="flex:1">${esc(p.presence.name||"Guest")}${p.isMe?" (you)":""}${p.peer===S.host?" 👑":""}</b>${isH()&&!p.isMe?`<button data-h="${p.peer}">Make host</button>`:""}</div>`).join("")||'<div class="mu">Just you.</div>')+`<div class="row"><input id="nn" value="${esc(me.name)}"><button id="ns">Rename</button></div>`;
+ const st=P.scrollTop;P.innerHTML=h;P.scrollTop=st;const cl=$("#cl");if(cl)cl.scrollTop=1e9}
+document.addEventListener("click",e=>{const t=e.target,d=t.dataset||{};
+ if(d.t){tab=d.t;draw()}else if(d.g){gen=d.g;draw()}else if(d.w!=null)act({vid:+d.w,pos:0,playing:true});else if(d.a!=null){PL.push(+d.a);pl()}else if(d.r!=null){PL.splice(+d.r,1);pl()}
+ else if(d.h){act({host:d.h})}else if(d.v!=null){VOTES[me.peerId||me.id]=+d.v;send("vote",{i:+d.v});draw()}
+ else if(t.id=="cs")sendChat();else if(t.id=="pb")mkPoll($("#pq").value,$("#po").value.split(",").map(s=>s.trim()).filter(Boolean));
+ else if(t.id=="pm")mkPoll("What should we watch next?",[...MV].sort((a,b)=>b.r-a.r).slice(0,4).map(m=>m.t));
+ else if(t.id=="lt"){let n=0;const iv=setInterval(()=>{ping();if(++n>=30)clearInterval(iv)},60)}
+ else if(t.id=="ns"){me.name=$("#nn").value.slice(0,20)||me.name;R&&R.presence({name:me.name})}
+ else if(d.e){fly(d.e);send("react",{e:d.e})}});
+function sendChat(){const i=$("#ci"),m=i.value.trim();if(!m)return;const c={n:me.name,m};chat.push(c);send("chat",c);i.value="";draw()}
+function mkPoll(q,o){if(!q||o.length<2)return;POLL={q,o};VOTES={};send("poll",{p:POLL});draw()}
+document.addEventListener("keydown",e=>{if(e.key=="Enter"&&e.target.id=="ci")sendChat()});
+document.addEventListener("input",e=>{if(e.target.id=="qi"){q=e.target.value;const s=e.target.selectionStart;draw();const i=$("#qi");i.focus();i.setSelectionRange(s,s)}if(e.target.id=="mr"){minR=+e.target.value;draw()}});
+$("#pp").onclick=()=>act({playing:!S.playing,pos:cur()});
+$("#seek").onchange=e=>act({pos:+e.target.value});
+$("#jit").onclick=()=>{S.pos+=1.2;ui()};
+$("#cp").onclick=()=>{const l=location.href.split("#")[0]+"#"+code;navigator.clipboard&&navigator.clipboard.writeText(l).then(()=>$("#cp").textContent="Copied ✓",()=>$("#cp").textContent=code);setTimeout(()=>$("#cp").textContent="Copy invite",1500)};
+$("#jb").onclick=()=>connect($("#jc").value);$("#nr").onclick=()=>connect("");
+$("#rx").innerHTML=EM.map(e=>`<button data-e="${e}">${e}</button>`).join("");
+const cv=$("#cv"),cx=cv.getContext("2d");
+(function loop(){const m=MV[S.vid],p=cur(),W=960,H=540,t=p;
+ const g=cx.createLinearGradient(0,0,W,H);g.addColorStop(0,`hsl(${m.h+t*3%360} 70% 30%)`);g.addColorStop(1,`hsl(${m.h+80} 60% 12%)`);cx.fillStyle=g;cx.fillRect(0,0,W,H);
+ for(let i=0;i<9;i++){cx.fillStyle=`hsla(${m.h+i*30} 90% 65% / .18)`;cx.beginPath();cx.arc((i*173+t*(20+i*7))%(W+200)-100,H/2+Math.sin(t/2+i)*140,40+i*9,0,7);cx.fill()}
+ cx.fillStyle="#fff";cx.font="bold 54px system-ui";cx.textAlign="center";cx.fillText(m.t,W/2,H/2);cx.font="22px system-ui";cx.fillText(`${m.g} · ${m.y} · simulated feed`,W/2,H/2+40);cx.font="bold 30px monospace";cx.fillText(fmt(p)+" / "+fmt(m.d),W/2,H-40);
+ if(!S.playing){cx.fillStyle="#0007";cx.fillRect(0,0,W,H);cx.fillStyle="#fff";cx.font="90px system-ui";cx.fillText("⏸",W/2,H/2+120)}
+ if(document.activeElement!==$("#seek"))$("#seek").value=p;$("#tm").textContent=fmt(p)+" / "+fmt(m.d);$("#dr").textContent="drift "+drift.toFixed(0)+" ms";
+ requestAnimationFrame(loop)})();
+setInterval(hostTick,2000);setInterval(()=>{ping();if(tab=="stats")ui()},10000);
+setInterval(()=>{if(!isH())return;if(S.playing&&cur()>=MV[S.vid].d-.2)next()},1000);
+ui();connect(location.hash.slice(1));
+</script></body></html>
